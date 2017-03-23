@@ -6,14 +6,12 @@ Python 3.5.2
 
 import itertools
 from operator import itemgetter
-import random
 
-from matplotlib import pyplot as plt
-from sklearn.metrics import classification_report, confusion_matrix
-
-import models.multiDTW as multiDTW
 import numpy as np
 import pandas as pd
+from matplotlib import pyplot as plt
+
+import models.multiDTW as multiDTW
 
 
 def frange(a, b, step):
@@ -230,6 +228,8 @@ def vizData(series):
     plt.tight_layout()
     plt.show()
 
+
+"""
 def classification(series):
     
     # Mapping table for target classes
@@ -264,7 +264,7 @@ def classification(series):
     tar_test = [x[1] for x in test_tuples]
     print(classification_report(tar_results,tar_test, target_names=[l for l in labels.values()]))
     conf_mat = confusion_matrix(tar_results,tar_test)
-    
+
     # Plot the classification confusion matrix 
     plt.figure(figsize=(5,5))
     plt.imshow(np.array(conf_mat), cmap=plt.get_cmap('summer'), interpolation='nearest')
@@ -277,9 +277,14 @@ def classification(series):
     _ = plt.yticks(range(2), [l for l in labels.values()])
     plt.tight_layout()
     plt.show()
+"""
+
+
+def classification(series):
+    data = list(map(lambda x: (x['id'], int(x['target']), normalize(np.array(x['series']))), series))
+    multiDTW.cross_validation(data, 5)
     
 def main():
-    
     series = readData()
     #vizData(series)
     classification(series)
